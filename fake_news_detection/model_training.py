@@ -31,6 +31,8 @@ def load_data():
 
 # Preprocess text
 def preprocess_text(text):
+    if not isinstance(text, str):
+        return ''
     text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation
     text = text.lower()  # Lowercase
     stop_words = set(stopwords.words('english'))
@@ -104,7 +106,7 @@ if __name__ == "__main__":
     model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    model.fit(X_train_pad, y_train, epochs=10, batch_size=64, validation_split=0.2)
+    model.fit(X_train_pad, y_train, epochs=1, batch_size=64, validation_split=0.2)
     y_pred_lstm = (model.predict(X_test_pad) > 0.5).astype(int).flatten()
     print("\nLSTM:")
     print(f"Accuracy: {accuracy_score(y_test, y_pred_lstm)}")
